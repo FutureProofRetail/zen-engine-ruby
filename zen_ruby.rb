@@ -2,6 +2,13 @@ require "ffi"
 require "json"
 
 module ZenRuby
+  module LibC
+    extend FFI::Library
+    ffi_lib FFI::Library::LIBC
+
+    attach_function :strdup, [:string], :pointer
+  end
+
   extend FFI::Library
   ffi_lib "deps/darwin_arm64/libzen_ffi.dylib"
 
@@ -127,16 +134,10 @@ module ZenRuby
           content_json = loader.call(key)
 
           loader_result = ZenDecisionLoaderResult.new
-
-          # This string will be GC'd; that's fine, it's an input string and we
-          # don't need it after the callback returns.
-          #
-          # TODO: is that actually true? Is there change of race condition where,
-          # between this callback returning a value and the Zen library processing
-          # it, the GC could collect the string? If so we may need to stash the
-          # pointer in some shared pool and then free it at the end of `#evaluate` or
-          # any other methods that trigger the loader callback.
-          loader_result[:content] = FFI::MemoryPointer.from_string(content_json)
+          
+          # Allocate memory that won't be managed by Ruby
+          # (if we use MemoryPointer here, it'll cause double-free errors)
+          loader_result[:content] = LibC.strdup(content_json)
           loader_result
         end
       end
