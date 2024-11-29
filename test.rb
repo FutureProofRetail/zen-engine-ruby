@@ -13,7 +13,9 @@ end
 def custom_handler(request)
   p1 = request.fetch("node").fetch("config").fetch("prop1")
   {
-    "output" => { "sum" => p1 }
+    "output" => {
+      "sum" => p1
+    }
   }
 end
 
