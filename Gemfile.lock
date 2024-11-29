@@ -1,0 +1,15 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    ffi (1.17.0-arm64-darwin)
+    minitest (5.25.2)
+
+PLATFORMS
+  arm64-darwin-21
+
+DEPENDENCIES
+  ffi (~> 1.17)
+  minitest (~> 5.25)
+
+BUNDLED WITH
+   2.4.10
