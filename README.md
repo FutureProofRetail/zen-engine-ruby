@@ -1,6 +1,6 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-# Ruby Rules Engine (ALPHA)
+# ZEN Rules Engine for Ruby (ALPHA)
 
 Ruby Bindings for the [GoRules Zen Business Rules Engine](https://github.com/gorules/zen).
 
@@ -14,49 +14,24 @@ An open-source React editor is available on our [JDM Editor](https://github.com/
 ## Installation
 
 ```bash
-gem install zen-engine-ruby
+# TODO: deploy to rubygems
+# gem install zen-engine-ruby
 ```
 
 ## Usage
 
-ZEN Engine is built as embeddable BRE for your **Rust**, **NodeJS**, **Python** or **Go** applications.
+ZEN Engine is built as embeddable BRE for your **Ruby**, **Rust**, **NodeJS**, **Python** or **Go** applications.
 It parses JDM from JSON content. It is up to you to obtain the JSON content, e.g. from file system, database or service call.
 
 ### Load and Execute Rules
 
-```go
-package main
-
-import (
-	"fmt"
-	"os"
-	"path"
-)
-
-func readTestFile(key string) ([]byte, error) {
-	filePath := path.Join("test-data", key)
-	return os.ReadFile(filePath)
-}
-
-func main() {
-	engine := zen.NewEngine(zen.EngineConfig{Loader: readTestFile})
-	defer engine.Dispose() // Call to avoid leaks
-
-	output, err := engine.Evaluate("rule.json", map[string]any{})
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	fmt.Println(output)
-}
-
-```
-For more details on rule format and advanced usage, take a look at the [Documentation](https://gorules.io/docs/developers/bre/engines/go).
+TODO: write this section. In the meantime, take a look at [test.rb](./test.rb) for how to use this API.
 
 ### Supported Platforms
 
 List of platforms where Zen Engine is natively available:
 
+* **Ruby** - [GitHub](https://github.com/FutureProofRetail/zen-engine-ruby/README.md)
 * **NodeJS** - [GitHub](https://github.com/gorules/zen/blob/master/bindings/nodejs/README.md) | [Documentation](https://gorules.io/docs/developers/bre/engines/nodejs) | [npmjs](https://www.npmjs.com/package/@gorules/zen-engine)
 * **Python** - [GitHub](https://github.com/gorules/zen/blob/master/bindings/python/README.md) | [Documentation](https://gorules.io/docs/developers/bre/engines/python) | [pypi](https://pypi.org/project/zen-engine/)
 * **Go** - [GitHub](https://github.com/gorules/zen-go) | [Documentation](https://gorules.io/docs/developers/bre/engines/go)
@@ -66,8 +41,6 @@ For a complete **Business Rules Management Systems (BRMS)** solution:
 
 * [Self-hosted BRMS](https://gorules.io)
 * [GoRules Cloud BRMS](https://gorules.io/signin/verify-email)
-
-
 
 ## JSON Decision Model (JDM)
 
