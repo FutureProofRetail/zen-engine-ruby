@@ -10,7 +10,40 @@ module ZenRuby
   end
 
   extend FFI::Library
-  ffi_lib "deps/darwin_arm64/libzen_ffi.dylib"
+  
+  # Determine platform-specific library name and path
+  def self.find_library_path
+    os = case RbConfig::CONFIG['host_os']
+    when /darwin|mac os/i
+      'darwin'
+    when /linux/i
+      'linux'
+    when /mswin|mingw|windows/i
+      'windows'
+    else
+      raise "Unsupported operating system: #{RbConfig::CONFIG['host_os']}"
+    end
+
+    arch = case RbConfig::CONFIG['host_cpu']
+    when /arm64|aarch64/i
+      'arm64'
+    when /x86_64|amd64/i
+      'amd64'
+    else
+      raise "Unsupported architecture: #{RbConfig::CONFIG['host_cpu']}"
+    end
+
+    extension = os == 'windows' ? 'dll' : (os == 'darwin' ? 'dylib' : 'so')
+    lib_path = File.expand_path("../deps/#{os}_#{arch}/libzen_ffi.#{extension}", __FILE__)
+    
+    unless File.exist?(lib_path)
+      raise "Library not found for #{os}_#{arch} platform at #{lib_path}"
+    end
+    
+    lib_path
+  end
+
+  ffi_lib find_library_path
 
   # typedef struct ZenDecisionLoaderResult {
   #   char *content;
