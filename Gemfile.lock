@@ -1,9 +1,9 @@
 PATH
   remote: .
   specs:
-    zen-engine-ruby (0.0.2)
+    zen-engine-ruby (0.0.3-arm64-darwin)
       ffi (~> 1.17)
-    zen-engine-ruby (0.0.2-x86_64-linux)
+    zen-engine-ruby (0.0.3-x86_64-linux)
       ffi (~> 1.17)
 
 GEM
