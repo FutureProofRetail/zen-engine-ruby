@@ -1,3 +1,9 @@
+PATH
+  remote: .
+  specs:
+    zen-engine-ruby (0.0.1)
+      ffi (~> 1.17)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -10,8 +16,8 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
-  ffi (~> 1.17)
   minitest (~> 5.25)
+  zen-engine-ruby!
 
 BUNDLED WITH
    2.4.6
