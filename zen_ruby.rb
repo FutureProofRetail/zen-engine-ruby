@@ -2,8 +2,48 @@ require "ffi"
 require "json"
 
 module ZenRuby
+  module LibC
+    extend FFI::Library
+    ffi_lib FFI::Library::LIBC
+
+    attach_function :strdup, [:string], :pointer
+  end
+
   extend FFI::Library
-  ffi_lib "deps/darwin_arm64/libzen_ffi.dylib"
+  
+  # Determine platform-specific library name and path
+  def self.find_library_path
+    os = case RbConfig::CONFIG['host_os']
+    when /darwin|mac os/i
+      'darwin'
+    when /linux/i
+      'linux'
+    when /mswin|mingw|windows/i
+      'windows'
+    else
+      raise "Unsupported operating system: #{RbConfig::CONFIG['host_os']}"
+    end
+
+    arch = case RbConfig::CONFIG['host_cpu']
+    when /arm64|aarch64/i
+      'arm64'
+    when /x86_64|amd64/i
+      'amd64'
+    else
+      raise "Unsupported architecture: #{RbConfig::CONFIG['host_cpu']}"
+    end
+
+    extension = os == 'windows' ? 'dll' : (os == 'darwin' ? 'dylib' : 'so')
+    lib_path = File.expand_path("../deps/#{os}_#{arch}/libzen_ffi.#{extension}", __FILE__)
+    
+    unless File.exist?(lib_path)
+      raise "Library not found for #{os}_#{arch} platform at #{lib_path}"
+    end
+    
+    lib_path
+  end
+
+  ffi_lib find_library_path
 
   # typedef struct ZenDecisionLoaderResult {
   #   char *content;
@@ -127,16 +167,10 @@ module ZenRuby
           content_json = loader.call(key)
 
           loader_result = ZenDecisionLoaderResult.new
-
-          # This string will be GC'd; that's fine, it's an input string and we
-          # don't need it after the callback returns.
-          #
-          # TODO: is that actually true? Is there change of race condition where,
-          # between this callback returning a value and the Zen library processing
-          # it, the GC could collect the string? If so we may need to stash the
-          # pointer in some shared pool and then free it at the end of `#evaluate` or
-          # any other methods that trigger the loader callback.
-          loader_result[:content] = FFI::MemoryPointer.from_string(content_json)
+          
+          # Allocate memory that won't be managed by Ruby
+          # (if we use MemoryPointer here, it'll cause double-free errors)
+          loader_result[:content] = LibC.strdup(content_json)
           loader_result
         end
       end
