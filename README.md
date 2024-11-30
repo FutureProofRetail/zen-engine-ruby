@@ -5,7 +5,7 @@
 Ruby Bindings for the [GoRules Zen Business Rules Engine](https://github.com/gorules/zen).
 
 ZEN Engine is a cross-platform, Open-Source Business Rules Engine (BRE). It is written in Rust and provides native 
-bindings for **NodeJS**, **Python**, **Ruby**, and **Go**. ZEN Engine allows to load and execute JSON Decision Model (JDM) from JSON files.
+bindings for **Ruby**, **NodeJS**, **Python**, **Ruby**, and **Go**. ZEN Engine allows to load and execute JSON Decision Model (JDM) from JSON files.
 
 <img width="800" alt="Open-Source Rules Engine" src="https://gorules.io/images/jdm-editor.gif">
 
@@ -14,9 +14,10 @@ An open-source React editor is available on our [JDM Editor](https://github.com/
 ## Installation
 
 ```bash
-# TODO: deploy to rubygems
-# gem install zen-engine-ruby
+gem install zen-engine-ruby
 ```
+
+Or add `zen-engine-ruby` to your `Gemfile`.
 
 ## Usage
 

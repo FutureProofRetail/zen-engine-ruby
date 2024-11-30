@@ -20,4 +20,4 @@ jobs:
           bundler-cache: true
       - name: Test
         run: |
-          bundle exec ruby test.rb
+          bundle exec ruby test/basic_test.rb
