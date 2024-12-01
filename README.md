@@ -19,6 +19,13 @@ gem install zen-engine-ruby
 
 Or add `zen-engine-ruby` to your `Gemfile`.
 
+NOTE: you may need to specify the platforms you're bundling for via:
+
+```
+# e.g. for Heroku + Apple ARM
+bundle lock --add-platform arm64-darwin-23 x86_64-linux
+```
+
 ## Usage
 
 ZEN Engine is built as embeddable BRE for your **Ruby**, **Rust**, **NodeJS**, **Python** or **Go** applications.
